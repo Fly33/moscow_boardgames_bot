@@ -7,10 +7,13 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
     
+# Ваш токен бота и ID канала
+BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+
 WEBHOOK_HOST = os.getenv('WEBHOOK_HOST')
 WEBHOOK_PORT = int(os.getenv('WEBHOOK_PORT'))
 WEBHOOK_URL_BASE = f"https://{WEBHOOK_HOST}"
-WEBHOOK_URL_PATH = "/MoscowBoardgamesBot/"
+WEBHOOK_URL_PATH = f"/{BOT_TOKEN}"
     
 app = flask.Flask(__name__)
 

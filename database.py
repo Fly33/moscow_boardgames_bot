@@ -7,22 +7,14 @@ load_dotenv()
 
 # Инициализация базы данных MySQL (подключение будет глобальным)
 DB_HOST = os.getenv('MYSQLHOST')
+DB_PORT = int(os.getenv("MYSQLPORT", 3306))
 DB_USER = os.getenv('MYSQLUSER')
 DB_PASSWORD = os.getenv('MYSQLPASSWORD')
 DB_NAME = os.getenv('MYSQLDATABASE')
 
-print(f'''DB_HOST = {DB_HOST}
-DB_USER = {DB_USER}
-DB_PASSWORD = {DB_PASSWORD}
-DB_NAME = {DB_NAME}''')
-
-
-print("Environment variables:")
-for key, value in os.environ.items():
-    print(f"{key}: {value}")
-
 connection = mysql.connector.connect(
     host=DB_HOST,
+    port=DB_PORT,
     user=DB_USER,
     password=DB_PASSWORD,
     database=DB_NAME
