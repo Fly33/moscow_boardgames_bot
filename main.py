@@ -11,6 +11,7 @@ load_dotenv()
 BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 
 WEBHOOK_HOST = os.getenv('WEBHOOK_HOST')
+PORT = int(os.getenv("PORT"))
 WEBHOOK_PORT = int(os.getenv('WEBHOOK_PORT'))
 WEBHOOK_URL_BASE = f"https://{WEBHOOK_HOST}"
 WEBHOOK_URL_PATH = f"/{BOT_TOKEN}"
@@ -38,4 +39,4 @@ bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH)
 
 # Запуск Flask приложения
 if __name__ == "__main__":
-    app.run(port=WEBHOOK_PORT)
+    app.run(host="0.0.0.0", port=PORT)
