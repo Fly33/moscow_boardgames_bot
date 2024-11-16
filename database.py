@@ -16,6 +16,11 @@ DB_USER = {DB_USER}
 DB_PASSWORD = {DB_PASSWORD}
 DB_NAME = {DB_NAME}''')
 
+
+print("Environment variables:")
+for key, value in os.environ.items():
+    print(f"{key}: {value}")
+
 connection = mysql.connector.connect(
     host=DB_HOST,
     user=DB_USER,
