@@ -11,6 +11,11 @@ DB_USER = os.getenv('MYSQLUSER')
 DB_PASSWORD = os.getenv('MYSQLPASSWORD')
 DB_NAME = os.getenv('MYSQLDATABASE')
 
+print(f'''DB_HOST = {DB_HOST}
+DB_USER = {DB_USER}
+DB_PASSWORD = {DB_PASSWORD}
+DB_NAME = {DB_NAME}''')
+
 connection = mysql.connector.connect(
     host=DB_HOST,
     user=DB_USER,
