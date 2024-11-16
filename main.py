@@ -1,3 +1,4 @@
+import os
 import flask
 import telebot
 from moscow_boardgames_bot import bot
