@@ -17,6 +17,10 @@ WEBHOOK_URL_PATH = f"/{BOT_TOKEN}"
     
 app = flask.Flask(__name__)
 
+@app.route("/health", methods=["GET"])
+def health():
+    return {"status": "ok"}, 200
+
 # Обработка входящих сообщений
 @app.route(WEBHOOK_URL_PATH, methods=['POST'])
 def webhook():
