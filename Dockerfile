@@ -1,15 +1,25 @@
+# Используем официальный образ Python
 FROM python:3.11.6-slim
 
+# Устанавливаем рабочую директорию
 WORKDIR /app
+
+# Копируем содержимое проекта
 COPY . /app
 
-RUN pip install poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install --no-dev
+# Установка Poetry
+RUN pip install --no-cache-dir poetry
 
-# Установите русскую локаль
-RUN apt-get update && apt-get install -y locales \
-    && locale-gen ru_RU.UTF-8
+# Конфигурация Poetry
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-dev
+
+# Установка локалей и настройка русской локали
+RUN apt-get update && apt-get install -y --no-install-recommends locales \
+    && locale-gen ru_RU.UTF-8 \
+    && update-locale LANG=ru_RU.UTF-8 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Устанавливаем переменные окружения для Python
 ENV LANG=ru_RU.UTF-8 \
