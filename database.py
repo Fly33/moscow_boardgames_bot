@@ -8,7 +8,7 @@ load_dotenv()
 DB_HOST = os.getenv('MYSQLHOST')
 DB_USER = os.getenv('MYSQLUSER')
 DB_PASSWORD = os.getenv('MYSQLPASSWORD')
-DB_NAME = os.getenv('MYSQL_DATABASE')
+DB_NAME = os.getenv('MYSQLDATABASE')
 
 connection = mysql.connector.connect(
     host=DB_HOST,
