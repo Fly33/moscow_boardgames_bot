@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "moscow-boardgames-bot"
+version = "1.0.0"
+description = ""
+authors = ["Fly33 <fly@acm-server.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pytelegrambotapi = "^4.21.0"
+python-dotenv = "^1.0.1"
+flask = "*"
+mysql-connector-python = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
