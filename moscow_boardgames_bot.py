@@ -190,30 +190,7 @@ def handle_upcoming(message):
 
 
 @bot.message_handler(commands=['query'])
-def handle_upcoming(message):
-    try:
-        now = datetime.now()
-        query = "SELECT id, date, message FROM events WHERE date >= %s ORDER BY date ASC"
-        cursor.execute(query, (now,))
-        events = cursor.fetchall()
-        
-        if not events:
-            bot.reply_to(message, "No upcoming events found.")
-            return
-
-        # Форматируем список событий
-        response = "📅 Upcoming events:\n"
-        for event_id, event_date, event_message in events:
-            response += f"- {event_date.strftime('%Y-%m-%d %H:%M:%S')}: {event_message}\n"
-
-        bot.reply_to(message, response)
-    except Exception as e:
-        bot.reply_to(message, "An error occurred while fetching events.")
-        print(f"Error in handle_upcoming: {e}")
-
-
-@bot.message_handler(commands=['query'])
-def handle_query(message: Message):
+def handle_query(message):
     try:
         # Проверяем, что пользователь является администратором
         if message.from_user.id != ADMIN_USER_ID:
