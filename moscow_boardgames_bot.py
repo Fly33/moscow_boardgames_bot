@@ -27,6 +27,9 @@ sources = [
     rgub,
 ]
 
+# Ваш ID администратора
+ADMIN_USER_ID = os.getenv('ADMIN_USER_ID')  # Замените на свой Telegram ID
+
 # Ваш токен бота и ID канала
 BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 
@@ -105,6 +108,7 @@ def handle_update(message):
 
         # Добавление событий в таблицу `events`
         for event_id, event_date, event_message in events:
+            print(event_id, event_date, event_message)
             cursor.execute(
                 """
                 INSERT IGNORE INTO events (id, date, message)
@@ -183,6 +187,68 @@ def handle_upcoming(message):
     except Exception as e:
         bot.reply_to(message, "An error occurred while fetching events.")
         print(f"Error in handle_upcoming: {e}")
+
+
+@bot.message_handler(commands=['query'])
+def handle_upcoming(message):
+    try:
+        now = datetime.now()
+        query = "SELECT id, date, message FROM events WHERE date >= %s ORDER BY date ASC"
+        cursor.execute(query, (now,))
+        events = cursor.fetchall()
+        
+        if not events:
+            bot.reply_to(message, "No upcoming events found.")
+            return
+
+        # Форматируем список событий
+        response = "📅 Upcoming events:\n"
+        for event_id, event_date, event_message in events:
+            response += f"- {event_date.strftime('%Y-%m-%d %H:%M:%S')}: {event_message}\n"
+
+        bot.reply_to(message, response)
+    except Exception as e:
+        bot.reply_to(message, "An error occurred while fetching events.")
+        print(f"Error in handle_upcoming: {e}")
+
+
+@bot.message_handler(commands=['query'])
+def handle_query(message: Message):
+    try:
+        # Проверяем, что пользователь является администратором
+        if message.from_user.id != ADMIN_USER_ID:
+            bot.reply_to(message, "You are not authorized to use this command.")
+            return
+
+        # Извлекаем запрос из команды
+        command_parts = message.text.split(maxsplit=1)
+        if len(command_parts) < 2:
+            bot.reply_to(message, "Please provide an SQL query.")
+            return
+
+        sql_query = command_parts[1]
+
+        # Выполняем запрос
+        cursor.execute(sql_query)
+        connection.commit()
+
+        # Если запрос возвращает данные, отправляем их пользователю
+        if cursor.description:
+            rows = cursor.fetchall()
+            if rows:
+                response = "Query results:\n"
+                for row in rows:
+                    response += f"{row}\n"
+            else:
+                response = "Query executed successfully. No results to display."
+        else:
+            response = "Query executed successfully."
+
+        bot.reply_to(message, response)
+
+    except Exception as e:
+        bot.reply_to(message, "An error occurred while executing the query.")
+        logging.error(f"Error in handle_query: {e}")
 
 
 if __name__ == '__main__':

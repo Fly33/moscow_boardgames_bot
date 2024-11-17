@@ -24,7 +24,7 @@ cursor = connection.cursor()
 # Создание таблицы событий, если она еще не существует
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS events (
-    id INT PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
     date DATETIME NOT NULL,
     message TEXT NOT NULL
 )
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS events (
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS channels (
-    id INT PRIMARY KEY
+    id VARCHAR(255) PRIMARY KEY
 )
 """)
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS sent_events (
-    event_id INT,
-    channel_id INT,
+    event_id VARCHAR(255),
+    channel_id VARCHAR(255),
     message_id INT,
     PRIMARY KEY (event_id, channel_id)
 )
