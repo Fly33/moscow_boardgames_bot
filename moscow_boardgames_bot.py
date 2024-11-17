@@ -166,7 +166,7 @@ def handle_update(message):
 def handle_upcoming(message):
     try:
         now = datetime.now()
-        query = "SELECT id, event_date, event_message FROM events WHERE event_date >= %s ORDER BY event_date ASC"
+        query = "SELECT id, date, message FROM events WHERE date >= %s ORDER BY date ASC"
         cursor.execute(query, (now,))
         events = cursor.fetchall()
         
