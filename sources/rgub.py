@@ -2,6 +2,10 @@ import re
 import requests
 from datetime import datetime
 import locale
+from zoneinfo import ZoneInfo
+
+# Добавляем временную зону
+MOSCOW_TZ = ZoneInfo("Europe/Moscow")
 
 # Устанавливаем русскую локаль
 try:
@@ -57,7 +61,14 @@ def get_events():
                 id = "rgub" + id
 
                 # Формируем дату
-                date = datetime(year=datetime.now().year, month=int(month), day=int(day))
+                date = datetime(
+                    year=datetime.now().year, 
+                    month=int(month), 
+                    day=int(day), 
+                    hour=int(hour), 
+                    minute=int(minute),
+                    tzinfo=MOSCOW_TZ
+                )
                 weekday = days_of_week[date.weekday()]
 
                 # Форматируем дату и время

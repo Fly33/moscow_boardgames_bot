@@ -54,7 +54,7 @@ UPGRADE_SCRIPTS = {
             message_id INT,
             PRIMARY KEY (event_id, channel_id)
             )""",
-    ]
+    ],
 }
 
 

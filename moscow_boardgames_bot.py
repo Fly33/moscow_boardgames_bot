@@ -135,26 +135,20 @@ def handle_update(message):
 
         # Отправка сообщений пользователю
         for event_id, event_date, event_message in pending_events:
-            for channel_id in get_registered_channels():
-                try:
-                    # Определяем дату отправки
-                    send_date = event_date - timedelta(days=1)
-                    if send_date <= now:
-                        send_date = now
+            channels = get_registered_channels()
+            logger.info(f'Channels: {channels}')
+            for channel_id in channels:
+                if isinstance(channel_id, str) and channel_id.isdigit():
+                    channel_id = int(channel_id)
 
-                    if send_date > now:
-                        bot.send_message(
-                            chat_id=channel_id,
-                            text=f"Scheduled for {send_date.strftime('%Y-%m-%d %H:%M')}:\n{event_message}"
-                        )
-                        logger.info(f"Message scheduled for channel {channel_id}: {event_message}")
-                    else:
-                        sent_message = bot.send_message(
-                            chat_id=channel_id,
-                            text=event_message
-                        )
-                        record_event_sent(event_id, channel_id, sent_message.message_id)
-                        logger.info(f"Message sent immediately to channel {channel_id}: {event_message}")
+                try:
+                    sent_message = bot.send_message(
+                        chat_id=channel_id,
+                        text=event_message,
+                        parse_mode="Markdown"
+                    )
+                    record_event_sent(event_id, channel_id, sent_message.message_id)
+                    logger.info(f"Message sent to channel {channel_id}: {event_message}")
                 except Exception as e:
                     logger.error(f"Error sending message to channel {channel_id}: {e}")
 
