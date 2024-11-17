@@ -173,11 +173,10 @@ def handle_upcoming(message):
             return
 
         # Форматируем список событий
-        response = "📅 Upcoming events:\n"
+        bot.reply_to(message, f"📅 Upcoming events: {len(events)}")
         for event_id, event_date, event_message in events:
-            response += f"- {event_date.strftime('%Y-%m-%d %H:%M:%S')}: {event_message}\n"
+            bot.reply_to(message, event_message, parse_mode="Markdown")
 
-        bot.reply_to(message, response)
     except Exception as e:
         bot.reply_to(message, "An error occurred while fetching events.")
         logger.exception(f"Error in handle_upcoming: {e}")

@@ -14,6 +14,14 @@ except locale.Error:
     print("Russian locale not available. Ensure it is installed on your system.")
     exit(1)
 
+
+def escape(text):
+    # Список символов Markdown, которые нужно экранировать
+    escape_chars = r'_*~`#+|{}!'
+    # Экранирование символов с помощью обратного слэша
+    return re.sub(f'([{re.escape(escape_chars)}])', r'\\\1', text)
+
+
 # URL страницы
 url = "https://rgub.ru/schedule/"
 
@@ -77,16 +85,16 @@ def get_events():
 
                 # Формируем сообщение
                 message = (
-                    f"**{weekday}**\n\n"
+                    f"*{weekday}*\n\n"
                     "Российская государственная библиотека для молодежи\n"
                     "Адрес: ул. Б. Черкизовская, д 4 к 1\n"
                     "м. Преображенская площадь (вых.№5)\n\n"
                     f"{name}\n"
-                    f"**{formatted_date} {time}**\n"
-                    f"https://rgub.ru{link}\n\n"
+                    f"*{formatted_date} {time}*\n"
+                    f"https://rgub.ru{escape(link)}\n\n"
                     f"{location}\n"
                     "Вход свободный\n"
-                    "Возрастная категория 12+\n"
+                    "Возрастная категория 12\+\n"
                 )
 
                 # Добавляем пару (дата, сообщение) в список
