@@ -96,7 +96,7 @@ def handle_update(message):
         events = []
         for source in sources:
             events_from_source = source.get_events()
-            logger.info(f"Fetched {len(events_from_source)} events from {source.__class__.__name__}")
+            logger.info(f"Fetched {len(events_from_source)} events from {source.get_name()}")
             events.extend(events_from_source)
 
         now = datetime.now()
@@ -160,6 +160,29 @@ def handle_update(message):
     except Exception:
         logger.exception("Error processing /update command")
         bot.reply_to(message, "An error occurred while processing the update.")
+
+
+@bot.message_handler(commands=['upcoming'])
+def handle_upcoming(message):
+    try:
+        now = datetime.now()
+        query = "SELECT id, event_date, event_message FROM events WHERE event_date >= %s ORDER BY event_date ASC"
+        cursor.execute(query, (now,))
+        events = cursor.fetchall()
+        
+        if not events:
+            bot.reply_to(message, "No upcoming events found.")
+            return
+
+        # Форматируем список событий
+        response = "📅 Upcoming events:\n"
+        for event_id, event_date, event_message in events:
+            response += f"- {event_date.strftime('%Y-%m-%d %H:%M:%S')}: {event_message}\n"
+
+        bot.reply_to(message, response)
+    except Exception as e:
+        bot.reply_to(message, "An error occurred while fetching events.")
+        print(f"Error in handle_upcoming: {e}")
 
 
 if __name__ == '__main__':
