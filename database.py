@@ -97,18 +97,15 @@ def update_db_version(cursor, new_version):
 """
 Инициализирует базу данных, обновляя её при необходимости.
 """
-try:
-    # Получение текущей версии базы данных
-    current_version = get_current_db_version(cursor)
-    logger.info(f"Current database version: {current_version}")
+# Получение текущей версии базы данных
+current_version = get_current_db_version(cursor)
+logger.info(f"Current database version: {current_version}")
 
-    # Обновление базы данных до текущей версии
-    if current_version < CURRENT_DB_VERSION:
-        apply_upgrade_scripts(cursor, current_version, CURRENT_DB_VERSION)
-        update_db_version(cursor, CURRENT_DB_VERSION)
-        connection.commit()
-        logger.info(f"Database updated to version {CURRENT_DB_VERSION}.")
-    else:
-        logger.info("Database is already up-to-date.")
-finally:
-    cursor.close()
+# Обновление базы данных до текущей версии
+if current_version < CURRENT_DB_VERSION:
+    apply_upgrade_scripts(cursor, current_version, CURRENT_DB_VERSION)
+    update_db_version(cursor, CURRENT_DB_VERSION)
+    connection.commit()
+    logger.info(f"Database updated to version {CURRENT_DB_VERSION}.")
+else:
+    logger.info("Database is already up-to-date.")
