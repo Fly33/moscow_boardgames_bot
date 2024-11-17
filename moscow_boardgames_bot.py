@@ -186,7 +186,7 @@ def handle_upcoming(message):
         bot.reply_to(message, response)
     except Exception as e:
         bot.reply_to(message, "An error occurred while fetching events.")
-        print(f"Error in handle_upcoming: {e}")
+        logger.exception(f"Error in handle_upcoming: {e}")
 
 
 @bot.message_handler(commands=['query'])
@@ -225,7 +225,7 @@ def handle_query(message):
 
     except Exception as e:
         bot.reply_to(message, "An error occurred while executing the query.")
-        logging.error(f"Error in handle_query: {e}")
+        logger.exception(f"Error in handle_query: {e}")
 
 
 if __name__ == '__main__':
