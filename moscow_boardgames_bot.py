@@ -70,7 +70,7 @@ def handle_start(message):
 def handle_register_channel(message):
     """Обработка команды /register_channel <channel_id>."""
     try:
-        channel_id = int(message.text.split()[1])
+        channel_id = message.text.split()[1]
         register_channel(channel_id)
         bot.reply_to(message, f"Channel {channel_id} registered successfully.")
         handle_update(message)  # Запуск обновления
