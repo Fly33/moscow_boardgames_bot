@@ -28,7 +28,7 @@ sources = [
 ]
 
 # Ваш ID администратора
-ADMIN_USER_ID = os.getenv('ADMIN_USER_ID')  # Замените на свой Telegram ID
+ADMIN_USER_ID = int(os.getenv('ADMIN_USER_ID'))  # Замените на свой Telegram ID
 
 # Ваш токен бота и ID канала
 BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
